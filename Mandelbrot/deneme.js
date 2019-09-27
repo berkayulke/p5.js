@@ -24,7 +24,7 @@ let y_minus = 0.0;
 let change_by = 0.1;
 
 function setup() {
-  frameRate(15);
+  frameRate(0.5);
   mandel_brot_numbers = get_mandelbrot_numbers();
   julia_index = floor(random(mandel_brot_numbers.length));
   julia_const = mandel_brot_numbers[julia_index];
