@@ -23,28 +23,31 @@ class Node {
     }
   }
 
-  create_child(amount) {
-    let zero = this.theta - HALF_PI;
-    let increase = PI / (amount - 1);
-    let angle = zero;
+  create_child(angle_increase, r_multi) {
+    //let zero = this.theta - HALF_PI;
+    let increase = angle_increase;
+    let angle = this.theta + increase;
 
-    for (let i = 1; i < amount + 1; i++) {
-      let n_x = this.next_x(this.theta);
-      let n_y = this.next_y(this.theta);
-      let n_r = this.r; //* 0.5;
-      let n_t = angle;
-      let new_c = new Node(n_x, n_y, n_r, n_t);
-      this.childs.push(new_c);
-      angle += increase;
-    }
+    let n_x = this.next_x(this.theta);
+    let n_y = this.next_y(this.theta);
+    let n_r = this.r * r_multi;
+    let n_t = angle;
+    let new_c = new Node(n_x, n_y, n_r, n_t);
+    this.childs.push(new_c);
+    increase *= -2;
+
+    n_t = angle + increase;
+    new_c = new Node(n_x, n_y, n_r, n_t);
+    this.childs.push(new_c);
   }
 
-  add_new_gen(amount) {
+  add_new_gen(angle_increase, r_multi) {
     let current = this;
-    if (current.childs.length == 0) current.create_child(amount);
-    else {
+    if (current.childs.length == 0) {
+      current.create_child(angle_increase, r_multi);
+    } else {
       for (let i = 0; i < current.childs.length; i++) {
-        current.childs[i].add_new_gen(amount);
+        current.childs[i].add_new_gen(angle_increase, r_multi);
       }
     }
   }
