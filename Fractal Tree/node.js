@@ -23,31 +23,46 @@ class Node {
     }
   }
 
-  create_child(angle_increase, r_multi) {
-    //let zero = this.theta - HALF_PI;
-    let increase = angle_increase;
-    let angle = this.theta + increase;
-
+  create_child(amount, angle_increase, r_multi) {
+    //this.theta represents 90 degress
+    let zero = this.theta - HALF_PI;
     let n_x = this.next_x(this.theta);
     let n_y = this.next_y(this.theta);
     let n_r = this.r * r_multi;
-    let n_t = angle;
-    let new_c = new Node(n_x, n_y, n_r, n_t);
-    this.childs.push(new_c);
-    increase *= -2;
+    let n_t;
+    if (amount % 2 == 1) {
+      n_t = this.theta;
+      this.childs.push(new Node(n_x, n_y, n_r, n_t));
+      for (let i = 1; i < (amount + 1) / 2; i++) {
+        n_t = this.theta + i * angle_increase;
+        this.childs.push(new Node(n_x, n_y, n_r, n_t));
+        n_t = this.theta - i * angle_increase;
+        this.childs.push(new Node(n_x, n_y, n_r, n_t));
+      }
+    } else {
+      n_t = this.theta + angle_increase / 2;
+      this.childs.push(new Node(n_x, n_y, n_r, n_t));
 
-    n_t = angle + increase;
-    new_c = new Node(n_x, n_y, n_r, n_t);
-    this.childs.push(new_c);
+      n_t = this.theta - angle_increase / 2;
+      this.childs.push(new Node(n_x, n_y, n_r, n_t));
+
+      for (let i = 1; i < amount / 2; i++) {
+        //with thath angle, i'm gonna draw one at theate + angle_increse, one at theate - angle_increase
+        n_t = this.theta + (i + 0.5) * angle_increase;
+        this.childs.push(new Node(n_x, n_y, n_r, n_t));
+        n_t = this.theta - (i + 0.5) * angle_increase;
+        this.childs.push(new Node(n_x, n_y, n_r, n_t));
+      }
+    }
   }
 
-  add_new_gen(angle_increase, r_multi) {
+  add_new_gen(amount, angle_increase, r_multi) {
     let current = this;
     if (current.childs.length == 0) {
-      current.create_child(angle_increase, r_multi);
+      current.create_child(amount, angle_increase, r_multi);
     } else {
       for (let i = 0; i < current.childs.length; i++) {
-        current.childs[i].add_new_gen(angle_increase, r_multi);
+        current.childs[i].add_new_gen(amount, angle_increase, r_multi);
       }
     }
   }
