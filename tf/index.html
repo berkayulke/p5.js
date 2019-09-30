@@ -1,0 +1,18 @@
+<script src="../p5.js"></script>
+<script src="deneme.js"></script>
+
+<script>
+  let details;
+  $.getJSON("http://gd.geobytes.com/GetCityDetails?callback=?", function(data) {
+    details = JSON.stringify(data, null, 2);
+  });
+  const Http = new XMLHttpRequest();
+  const url =
+    "http://localhost:3000/ananin_ami_ben_niye_boyle_seyler_yapabiliyorum";
+  Http.open("GET", url);
+  Http.send();
+
+  Http.onreadystatechange = e => {
+    console.log(Http.responseText);
+  };
+</script>
